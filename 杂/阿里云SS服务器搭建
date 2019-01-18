@@ -1,0 +1,64 @@
+## 阿里云Shadowsocks安装教程
+
+---
+1.首先登陆阿里云网站购买服务器,登陆香港或新加班都可. 我选择ubuntu系统.
+
+2.使用命令安装SS服务
+
+3.建立配置文件<br/>
+
+```
+vi /etc/shadowsocks.json
+```
+配置文件内容
+
+```
+单端口：  
+ {  
+ "server":"0.0.0.0",            // 服务器IP，直接用0.0.0.0也可  
+ "server_port":8888,            // 端口*  
+ "local_address": "127.0.0.1",  // 本地地址，可省略  
+ "local_port":1080,             // 本地端口，可省略  
+ "password":"password",         // 密码*  
+ "timeout":300,                 // 超时时间，可省略  
+ "method":"aes-256-cfb",        // 加密策略，有多重策略，具体自查  
+}  
+多端口：  
+{  
+    "server":"0.0.0.0",  
+    "local_address":"127.0.0.1",  
+    "local_port":1080,  
+    "port_password":{           // 每个端口对应一个密码  
+        "1111":"password1",  
+        "1112":"password2",  
+        "1113":"password3"  
+    },  
+    "timeout":300,  
+    "method":"aes-256-cfb",  
+    "fast_open":false  
+}  
+```
+3.使用命令开启SS服务
+
+```
+// 启动  
+ssserver -c /etc/shadowsocks.json -d start  
+// 停止  
+ssserver -c /etc/shadowsocks.json -d stop  
+// 重启  
+ssserver -c /etc/shadowsocks.json -d restart
+```
+
+**尤其值得注意的是**:<br/>
+- 若服务器为专用网络,则配置文件中的服务器的IP填写内网IP
+- 
+```
+iptables -A INPUT -p tcp --dport 8388 -j ACCEPT  //开放配置的端口
+```
+- 服务器实例的安装组规则需要增加自定义TCP在相关端口的访问,允许所有的端口进行访问,即设置为0.0.0.0
+
+4.至于Windows客户端,可自行到GitHub上下载最新的版本,配置好进行,**点击启动系统代理**即可使用
+
+
+
+
