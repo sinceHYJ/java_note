@@ -71,6 +71,8 @@ public static void main(String[] args) {
                 .map(Insurace::getName);
 
         System.out.println(insuraceName.get());
+  
+  			Optional<Insurace> insuraceName = person.flatMap(t -> {return Optional.of(insurace);});
 
     }
 // 会正常输出保险名称1
